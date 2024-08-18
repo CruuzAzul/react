@@ -53,6 +53,9 @@ type ReducerAction =
       payload: {
         source: string;
       };
+    }
+  | {
+      type: 'setIntermediateSteps';
     };
 
 function storeReducer(store: Store, action: ReducerAction): Store {
@@ -69,6 +72,15 @@ function storeReducer(store: Store, action: ReducerAction): Store {
       const newStore = {
         ...store,
         source,
+      };
+
+      saveStore(newStore);
+      return newStore;
+    }
+    case 'setIntermediateSteps': {
+      const newStore = {
+        ...store,
+        isVisibleSteps: !store.isVisibleSteps,
       };
 
       saveStore(newStore);

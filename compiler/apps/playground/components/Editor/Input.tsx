@@ -17,6 +17,7 @@ import {useStore, useStoreDispatch} from '../StoreContext';
 import {monacoOptions} from './monacoOptions';
 // @ts-expect-error TODO: Make TS recognize .d.ts files, in addition to loading them with webpack.
 import React$Types from '../../node_modules/@types/react/index.d.ts';
+import {HIGHLIGHT_BACKGROUND} from "../../lib/constant";
 
 loader.config({monaco});
 
@@ -125,6 +126,16 @@ export default function Input({errors, language}: Props): JSX.Element {
     document.fonts.ready.then(() => {
       monaco.editor.remeasureFonts();
     });
+
+    monaco.editor.defineTheme('test-theme', {
+      base: 'vs', // Choisissez 'vs', 'vs-dark' ou 'hc-black' selon vos préférences
+      inherit: true,
+      rules: [],
+      colors: {
+        "editor.lineHighlightBackground": HIGHLIGHT_BACKGROUND,
+      },
+    });
+    monaco.editor.setTheme('test-theme');
   };
 
   return (

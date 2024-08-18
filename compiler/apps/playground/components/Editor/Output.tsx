@@ -12,7 +12,7 @@ import {
   DocumentAddIcon,
   InformationCircleIcon,
 } from '@heroicons/react/outline';
-import MonacoEditor, {DiffEditor} from '@monaco-editor/react';
+import MonacoEditor, {DiffEditor, type Monaco} from '@monaco-editor/react';
 import {type CompilerError} from 'babel-plugin-react-compiler/src';
 import parserBabel from 'prettier/plugins/babel';
 import * as prettierPluginEstree from 'prettier/plugins/estree';
@@ -21,6 +21,8 @@ import {memo, ReactNode, useEffect, useState} from 'react';
 import {type Store} from '../../lib/stores';
 import TabbedWindow from '../TabbedWindow';
 import {monacoOptions} from './monacoOptions';
+import type {editor} from "monaco-editor";
+import {HIGHLIGHT_BACKGROUND} from "../../lib/constant";
 const MemoizedOutput = memo(Output);
 
 export default MemoizedOutput;
@@ -113,7 +115,11 @@ async function tabify(
     );
     lastPassOutput = text;
   }
-  // Ensure that JS and the JS source map come first
+  if (isVisibleSteps) {
+    tabs.forEach((tab, name) => {
+      reorderedTabs.set(name, tab);
+    });
+  }
   if (topLevelFnDecls.length > 0) {
     /**
      * Make a synthetic Program so we can have a single AST with all the top level
@@ -122,7 +128,7 @@ async function tabify(
     const ast = t.program(topLevelFnDecls);
     const {code, sourceMapUrl} = await codegen(ast, source);
     reorderedTabs.set(
-      'JS',
+      '🪄 JS React Compiler Output',
       <TextTabContent
         output={code}
         diff={null}
@@ -141,9 +147,6 @@ async function tabify(
       );
     }
   }
-  tabs.forEach((tab, name) => {
-    reorderedTabs.set(name, tab);
-  });
   return reorderedTabs;
 }
 
@@ -181,17 +184,17 @@ function getSourceMapUrl(code: string, map: string): string | null {
 }
 
 function Output({store, compilerOutput}: Props): JSX.Element {
-  const [tabsOpen, setTabsOpen] = useState<Set<string>>(() => new Set(['JS']));
+  const [tabsOpen, setTabsOpen] = useState<Set<string>>(() => new Set(['🪄 JS React Compiler Output']));
   const [tabs, setTabs] = useState<Map<string, React.ReactNode>>(
     () => new Map(),
   );
   useEffect(() => {
-    tabify(store.source, compilerOutput).then(tabs => {
+    tabify(store.source, compilerOutput, store.isVisibleSteps).then(tabs => {
       setTabs(tabs);
     });
-  }, [store.source, compilerOutput]);
+  }, [store.isVisibleSteps, store.source, compilerOutput]);
 
-  const changedPasses: Set<string> = new Set(['JS', 'HIR']); // Initial and final passes should always be bold
+  const changedPasses: Set<string> = new Set(['🪄 JS React Compiler Output', 'HIR']); // Initial and final passes should always be bold
   let lastResult: string = '';
   for (const [passName, results] of compilerOutput.results) {
     for (const result of results) {
@@ -243,6 +246,19 @@ function TextTabContent({
   showInfoPanel: boolean;
 }): JSX.Element {
   const [diffMode, setDiffMode] = useState(false);
+
+  const handleMount = (_: editor.IStandaloneCodeEditor, monaco: Monaco) => {
+    monaco.editor.defineTheme('test-theme', {
+      base: 'vs', // Choisissez 'vs', 'vs-dark' ou 'hc-black' selon vos préférences
+      inherit: true,
+      rules: [],
+      colors: {
+        "editor.lineHighlightBackground": HIGHLIGHT_BACKGROUND,
+      },
+    });
+    monaco.editor.setTheme('test-theme');
+  };
+
   return (
     /**
      * Restrict MonacoEditor's height, since the config autoLayout:true
@@ -293,13 +309,14 @@ function TextTabContent({
         <MonacoEditor
           defaultLanguage="javascript"
           value={output}
+          onMount={handleMount}
           options={{
             ...monacoOptions,
             readOnly: true,
             lineNumbers: 'off',
             glyphMargin: false,
             // Undocumented see https://github.com/Microsoft/vscode/issues/30795#issuecomment-410998882
-            lineDecorationsWidth: 0,
+            lineDecorationsWidth: 5,
             lineNumbersMinChars: 0,
           }}
         />

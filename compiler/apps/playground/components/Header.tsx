@@ -5,7 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {RefreshIcon, ShareIcon} from '@heroicons/react/outline';
+import {
+  RefreshIcon,
+  ShareIcon,
+  EyeOffIcon,
+  EyeIcon
+} from '@heroicons/react/outline';
 import {CheckIcon} from '@heroicons/react/solid';
 import clsx from 'clsx';
 import Link from 'next/link';
@@ -14,12 +19,19 @@ import {useState} from 'react';
 import {defaultStore} from '../lib/defaultStore';
 import {IconGitHub} from './Icons/IconGitHub';
 import Logo from './Logo';
-import {useStoreDispatch} from './StoreContext';
+import {useStore, useStoreDispatch} from './StoreContext';
 
 export default function Header(): JSX.Element {
+  const store = useStore();
   const [showCheck, setShowCheck] = useState(false);
   const dispatchStore = useStoreDispatch();
   const {enqueueSnackbar, closeSnackbar} = useSnackbar();
+
+  const handleHide = () => {
+    dispatchStore({
+      type: 'setIntermediateSteps',
+    });
+  }
 
   const handleReset: () => void = () => {
     if (confirm('Are you sure you want to reset the playground?')) {
@@ -53,27 +65,44 @@ export default function Header(): JSX.Element {
             process.env.NODE_ENV === 'development' && 'text-yellow-600',
           )}
         />
-        <p className="hidden select-none sm:block">React Compiler Playground</p>
+        <p className="hidden select-none sm:block">
+          React Compiler Playground Clone 🌀
+          <span className="pl-3 text-base text-link">by Mickaël et Lucas</span>
+        </p>
       </div>
       <div className="flex items-center text-[15px] gap-4">
         <button
+          title="Hide steps"
+          aria-label="Hiude steps"
+          className="flex items-center gap-1 transition-colors duration-150 ease-in text-link pr-10 cursor-pointer"
+          onClick={handleHide}>
+          {
+            store.isVisibleSteps ? <EyeOffIcon className="w-5 h-5"/> : <EyeIcon className="w-5 h-5"/>
+          }
+          <p className="hidden sm:block font-bold">
+            {
+              store.isVisibleSteps ? "Hide intermediate steps" : "Show intermediate steps"
+            }
+          </p>
+        </button>
+        <button
           title="Reset Playground"
           aria-label="Reset Playground"
-          className="flex items-center gap-1 transition-colors duration-150 ease-in text-secondary hover:text-link"
+          className="flex items-center gap-1 transition-colors duration-150 ease-in text-secondary cursor-pointer hover:text-link"
           onClick={handleReset}>
-          <RefreshIcon className="w-5 h-5" />
+          <RefreshIcon className="w-5 h-5"/>
           <p className="hidden sm:block">Reset</p>
         </button>
         <button
           title="Copy sharable URL"
           aria-label="Copy sharable URL"
-          className="flex items-center gap-1 transition-colors duration-150 ease-in text-secondary hover:text-link"
+          className="flex items-center gap-1 transition-colors duration-150 ease-in text-secondary cursor-pointer hover:text-link"
           onClick={handleShare}
           disabled={showCheck}>
           {!showCheck ? (
-            <ShareIcon className="w-5 h-5" />
+            <ShareIcon className="w-5 h-5"/>
           ) : (
-            <CheckIcon className="w-5 h-5 fill-blue-50" />
+            <CheckIcon className="w-5 h-5 fill-blue-50"/>
           )}
           <p className="hidden sm:block">Share</p>
         </button>
@@ -83,7 +112,7 @@ export default function Header(): JSX.Element {
           rel="noreferrer noopener"
           aria-label="Open on GitHub"
           className="flex items-center gap-1 transition-colors duration-150 ease-in text-secondary hover:text-link">
-          <IconGitHub />
+          <IconGitHub/>
         </Link>
       </div>
     </div>

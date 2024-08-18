@@ -80,21 +80,21 @@ function TabbedWindowItem({
             title="Minimize tab"
             aria-label="Minimize tab"
             onClick={toggleTabs}
-            className={`p-4 duration-150 ease-in border-b cursor-pointer border-grey-200 ${
+            className={`p-4 text-xl duration-150 ease-in border-b cursor-pointer border-grey-200 text-blue-50 ${
               hasChanged ? 'font-bold' : 'font-light'
-            } text-secondary hover:text-link`}>
-            - {displayName}
+            } text-link`}>
+            {displayName}
           </h2>
           {tabs.get(name) ?? <div>No output for {name}</div>}
         </Resizable>
       ) : (
-        <div className="relative items-center h-full px-1 py-6 align-middle border-r border-grey-200">
+        <div className="relative items-center h-full px-2 py-6 align-middle border-r border-grey-200">
           <button
             title={`Expand compiler tab: ${name}`}
             aria-label={`Expand compiler tab: ${name}`}
             style={{transform: 'rotate(90deg) translate(-50%)'}}
             onClick={toggleTabs}
-            className={`flex-grow-0 w-5 transition-colors duration-150 ease-in ${
+            className={`flex-grow-0 text-xl w-5 transition-colors duration-150 ease-in whitespace-nowrap ${
               hasChanged ? 'font-bold' : 'font-light'
             } text-secondary hover:text-link`}>
             {displayName}
