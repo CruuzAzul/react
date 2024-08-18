@@ -1,2 +1,11 @@
-// You must use hex colors like #xxxxxx
+// You must use hex colors like #xxxxxx for the Monaco Editor colors
 export const HIGHLIGHT_BACKGROUND = "#B5D4E687"
+
+export const CATEGORY_CLASSES_COLORS = {
+  LOWERING: '#edb180',
+  OPTIMIZATION_AND_NORMALIZATION: '#c87070',
+  STATIC_ANALYSIS_AND_TYPE_INFERENCE: 'rgba(126,77,166,0.82)',
+  REACTIVE_OPTIMIZATION_HIR: '#6490d8',
+  REACTIVE_OPTIMIZATION_REACTIVE_FUNCTION: '#2f713a',
+  DEFAULT: '#000000'
+};

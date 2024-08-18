@@ -17,7 +17,7 @@ import {type CompilerError} from 'babel-plugin-react-compiler/src';
 import parserBabel from 'prettier/plugins/babel';
 import * as prettierPluginEstree from 'prettier/plugins/estree';
 import * as prettier from 'prettier/standalone';
-import {memo, ReactNode, useEffect, useState} from 'react';
+import React, {memo, ReactNode, useEffect, useState} from 'react';
 import {type Store} from '../../lib/stores';
 import TabbedWindow from '../TabbedWindow';
 import {monacoOptions} from './monacoOptions';
@@ -56,10 +56,19 @@ type Props = {
   compilerOutput: CompilerOutput;
 };
 
-async function tabify(
-  source: string,
-  compilerOutput: CompilerOutput,
-): Promise<Map<string, ReactNode>> {
+type TabsRecord = Map<string, React.ReactNode>;
+
+const filterTabs = (tabs: TabsRecord) => {
+  const keysToRemove = ["EnvironmentConfig"];
+
+  keysToRemove.forEach(key => {
+    tabs.delete(key);
+  });
+
+  return tabs;
+}
+
+async function tabify(source: string, compilerOutput: CompilerOutput, isVisibleSteps: boolean) {
   const tabs = new Map<string, React.ReactNode>();
   const reorderedTabs = new Map<string, React.ReactNode>();
   const concattedResults = new Map<string, string>();
@@ -115,8 +124,11 @@ async function tabify(
     );
     lastPassOutput = text;
   }
+
   if (isVisibleSteps) {
-    tabs.forEach((tab, name) => {
+    const filteredTabs = filterTabs(tabs);
+
+    filteredTabs.forEach((tab, name) => {
       reorderedTabs.set(name, tab);
     });
   }
@@ -136,7 +148,7 @@ async function tabify(
     );
     if (sourceMapUrl) {
       reorderedTabs.set(
-        'SourceMap',
+        '📍 Source Map',
         <>
           <iframe
             src={sourceMapUrl}
@@ -194,7 +206,7 @@ function Output({store, compilerOutput}: Props): JSX.Element {
     });
   }, [store.isVisibleSteps, store.source, compilerOutput]);
 
-  const changedPasses: Set<string> = new Set(['🪄 JS React Compiler Output', 'HIR']); // Initial and final passes should always be bold
+  const changedPasses: Set<string> = new Set(['🪄 JS React Compiler Output', 'HIR', '📍 Source Map']); // Initial and final passes should always be bold
   let lastResult: string = '';
   for (const [passName, results] of compilerOutput.results) {
     for (const result of results) {
@@ -249,7 +261,7 @@ function TextTabContent({
 
   const handleMount = (_: editor.IStandaloneCodeEditor, monaco: Monaco) => {
     monaco.editor.defineTheme('test-theme', {
-      base: 'vs', // Choisissez 'vs', 'vs-dark' ou 'hc-black' selon vos préférences
+      base: 'vs',
       inherit: true,
       rules: [],
       colors: {

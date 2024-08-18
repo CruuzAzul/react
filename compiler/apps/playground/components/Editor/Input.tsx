@@ -128,7 +128,7 @@ export default function Input({errors, language}: Props): JSX.Element {
     });
 
     monaco.editor.defineTheme('test-theme', {
-      base: 'vs', // Choisissez 'vs', 'vs-dark' ou 'hc-black' selon vos préférences
+      base: 'vs',
       inherit: true,
       rules: [],
       colors: {

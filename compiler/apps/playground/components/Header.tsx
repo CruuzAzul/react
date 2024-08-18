@@ -20,12 +20,14 @@ import {defaultStore} from '../lib/defaultStore';
 import {IconGitHub} from './Icons/IconGitHub';
 import Logo from './Logo';
 import {useStore, useStoreDispatch} from './StoreContext';
+import Legend from "./Legend/Legend";
 
 export default function Header(): JSX.Element {
   const store = useStore();
   const [showCheck, setShowCheck] = useState(false);
   const dispatchStore = useStoreDispatch();
   const {enqueueSnackbar, closeSnackbar} = useSnackbar();
+  const isVisibleSteps = store.isVisibleSteps;
 
   const handleHide = () => {
     dispatchStore({
@@ -57,64 +59,67 @@ export default function Header(): JSX.Element {
   };
 
   return (
-    <div className="fixed z-10 flex items-center justify-between w-screen px-5 py-3 bg-white border-b border-gray-200 h-14">
-      <div className="flex items-center flex-none h-full gap-2 text-lg">
-        <Logo
-          className={clsx(
-            'w-8 h-8 text-link',
-            process.env.NODE_ENV === 'development' && 'text-yellow-600',
-          )}
-        />
-        <p className="hidden select-none sm:block">
-          React Compiler Playground Clone 🌀
-          <span className="pl-3 text-base text-link">by Mickaël et Lucas</span>
-        </p>
-      </div>
-      <div className="flex items-center text-[15px] gap-4">
-        <button
-          title="Hide steps"
-          aria-label="Hiude steps"
-          className="flex items-center gap-1 transition-colors duration-150 ease-in text-link pr-10 cursor-pointer"
-          onClick={handleHide}>
-          {
-            store.isVisibleSteps ? <EyeOffIcon className="w-5 h-5"/> : <EyeIcon className="w-5 h-5"/>
-          }
-          <p className="hidden sm:block font-bold">
-            {
-              store.isVisibleSteps ? "Hide intermediate steps" : "Show intermediate steps"
-            }
+    <div className={`fixed z-10 flex flex-col items-center justify-between bg-white border-b border-gray-200 ${isVisibleSteps ? 'h-32' : 'h-20' }`}>
+      <div className="flex items-center justify-between w-screen px-5 py-6">
+        <div className="flex items-center flex-none h-full gap-2 text-lg">
+          <Logo
+            className={clsx(
+              'w-8 h-8 text-link',
+              process.env.NODE_ENV === 'development' && 'text-yellow-600',
+            )}
+          />
+          <p className="hidden select-none sm:block">
+            React Compiler Playground Clone 🌀
+            <span className="pl-3 text-base text-link">by Mickaël et Lucas</span>
           </p>
-        </button>
-        <button
-          title="Reset Playground"
-          aria-label="Reset Playground"
-          className="flex items-center gap-1 transition-colors duration-150 ease-in text-secondary cursor-pointer hover:text-link"
-          onClick={handleReset}>
-          <RefreshIcon className="w-5 h-5"/>
-          <p className="hidden sm:block">Reset</p>
-        </button>
-        <button
-          title="Copy sharable URL"
-          aria-label="Copy sharable URL"
-          className="flex items-center gap-1 transition-colors duration-150 ease-in text-secondary cursor-pointer hover:text-link"
-          onClick={handleShare}
-          disabled={showCheck}>
-          {!showCheck ? (
-            <ShareIcon className="w-5 h-5"/>
-          ) : (
-            <CheckIcon className="w-5 h-5 fill-blue-50"/>
-          )}
-          <p className="hidden sm:block">Share</p>
-        </button>
-        <Link
-          href="https://github.com/facebook/react"
-          target="_blank"
-          rel="noreferrer noopener"
-          aria-label="Open on GitHub"
-          className="flex items-center gap-1 transition-colors duration-150 ease-in text-secondary hover:text-link">
-          <IconGitHub/>
-        </Link>
+        </div>
+        <div className="flex items-center text-[15px] gap-4">
+          <button
+            title="Hide steps"
+            aria-label="Hiude steps"
+            className="flex items-center gap-1 transition-colors duration-150 ease-in text-link pr-10 cursor-pointer"
+            onClick={handleHide}>
+            {
+              store.isVisibleSteps ? <EyeOffIcon className="w-5 h-5"/> : <EyeIcon className="w-5 h-5"/>
+            }
+            <p className="hidden sm:block font-bold">
+              {
+                store.isVisibleSteps ? "Hide intermediate steps" : "Show intermediate steps"
+              }
+            </p>
+          </button>
+          <button
+            title="Reset Playground"
+            aria-label="Reset Playground"
+            className="flex items-center gap-1 transition-colors duration-150 ease-in text-secondary cursor-pointer hover:text-link"
+            onClick={handleReset}>
+            <RefreshIcon className="w-5 h-5"/>
+            <p className="hidden sm:block">Reset</p>
+          </button>
+          <button
+            title="Copy sharable URL"
+            aria-label="Copy sharable URL"
+            className="flex items-center gap-1 transition-colors duration-150 ease-in text-secondary cursor-pointer hover:text-link"
+            onClick={handleShare}
+            disabled={showCheck}>
+            {!showCheck ? (
+              <ShareIcon className="w-5 h-5"/>
+            ) : (
+              <CheckIcon className="w-5 h-5 fill-blue-50"/>
+            )}
+            <p className="hidden sm:block">Share</p>
+          </button>
+          <Link
+            href="https://github.com/facebook/react"
+            target="_blank"
+            rel="noreferrer noopener"
+            aria-label="Open on GitHub"
+            className="flex items-center gap-1 transition-colors duration-150 ease-in text-secondary hover:text-link">
+            <IconGitHub/>
+          </Link>
+        </div>
       </div>
+      { isVisibleSteps && <Legend /> }
     </div>
   );
 }
