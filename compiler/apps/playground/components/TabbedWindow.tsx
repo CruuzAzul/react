@@ -11,6 +11,7 @@ import {Resizable} from 're-resizable';
 import React, {useCallback} from 'react';
 import {formatStepLabel} from "../lib/formatStepLabel";
 import {getCategoryColor} from "../types/StepCategories";
+import {useStore} from "./StoreContext";
 
 type TabsRecord = Map<string, React.ReactNode>;
 
@@ -61,8 +62,9 @@ function TabbedWindowItem({
   setTabsOpen: (newTab: Set<string>) => void;
   hasChanged: boolean;
 }): React.ReactElement {
+  const store = useStore();
   const isShow = tabsOpen.has(name);
-  const colorItem = getCategoryColor(name);
+  const colorItem = store.isVisibleLegend ? getCategoryColor(name) : undefined;
 
   const toggleTabs = useCallback(() => {
     const nextState = new Set(tabsOpen);

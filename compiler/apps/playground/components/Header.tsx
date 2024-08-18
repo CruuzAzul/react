@@ -9,7 +9,7 @@ import {
   RefreshIcon,
   ShareIcon,
   EyeOffIcon,
-  EyeIcon
+  EyeIcon,
 } from '@heroicons/react/outline';
 import {CheckIcon} from '@heroicons/react/solid';
 import clsx from 'clsx';
@@ -24,18 +24,24 @@ import Legend from "./Legend/Legend";
 
 export default function Header(): JSX.Element {
   const store = useStore();
+  const {isVisibleLegend} = store;
   const [showCheck, setShowCheck] = useState(false);
   const dispatchStore = useStoreDispatch();
   const {enqueueSnackbar, closeSnackbar} = useSnackbar();
-  const isVisibleSteps = store.isVisibleSteps;
 
-  const handleHide = () => {
+  const handleToggleSteps = () => {
     dispatchStore({
       type: 'setIntermediateSteps',
     });
   }
 
-  const handleReset: () => void = () => {
+  const handleToggleLegend = () => {
+    dispatchStore({
+      type: 'setLegend',
+    });
+  }
+
+  const handleReset = () => {
     if (confirm('Are you sure you want to reset the playground?')) {
       /**
        * Close open snackbars if any. This is necessary because when displaying
@@ -59,8 +65,8 @@ export default function Header(): JSX.Element {
   };
 
   return (
-    <div className={`fixed z-10 flex flex-col items-center justify-between bg-white border-b border-gray-200 ${isVisibleSteps ? 'h-32' : 'h-20' }`}>
-      <div className="flex items-center justify-between w-screen px-5 py-6">
+    <div className={`fixed z-10 flex flex-col items-center justify-between bg-white border-b border-gray-200 ${isVisibleLegend ? 'h-32' : 'h-20' }`}>
+      <div className="flex items-center justify-between w-screen px-5 py-5">
         <div className="flex items-center flex-none h-full gap-2 text-lg">
           <Logo
             className={clsx(
@@ -74,13 +80,33 @@ export default function Header(): JSX.Element {
           </p>
         </div>
         <div className="flex items-center text-[15px] gap-4">
+          {
+            store.isVisibleSteps && (
+              <button
+                title="Hide steps"
+                aria-label="Hiude steps"
+                className="flex items-center gap-1 transition-colors duration-150 ease-in text-link p-3 cursor-pointer hover:bg-blue-10 rounded-md"
+                onClick={handleToggleLegend}>
+                {
+                  store.isVisibleLegend ? <EyeOffIcon className="w-5 h-5"/> :
+                    <EyeIcon className="w-5 h-5"/>
+                }
+                <p className="hidden sm:block font-bold">
+                  {
+                    store.isVisibleLegend ? "Hide categories" : "Show categories"
+                  }
+                </p>
+              </button>
+            )
+          }
           <button
             title="Hide steps"
             aria-label="Hiude steps"
-            className="flex items-center gap-1 transition-colors duration-150 ease-in text-link pr-10 cursor-pointer"
-            onClick={handleHide}>
+            className="flex items-center gap-1 transition-colors duration-150 ease-in text-link p-3 mr-3 cursor-pointer hover:bg-blue-10 rounded-md"
+            onClick={handleToggleSteps}>
             {
-              store.isVisibleSteps ? <EyeOffIcon className="w-5 h-5"/> : <EyeIcon className="w-5 h-5"/>
+              store.isVisibleSteps ? <EyeOffIcon className="w-5 h-5"/> :
+                <EyeIcon className="w-5 h-5"/>
             }
             <p className="hidden sm:block font-bold">
               {
@@ -119,7 +145,7 @@ export default function Header(): JSX.Element {
           </Link>
         </div>
       </div>
-      { isVisibleSteps && <Legend /> }
+      { isVisibleLegend && <Legend /> }
     </div>
   );
 }

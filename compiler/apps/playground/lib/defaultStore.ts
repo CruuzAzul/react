@@ -16,9 +16,11 @@ export default function MyApp() {
 export const defaultStore: Store = {
   source: index,
   isVisibleSteps: false,
+  isVisibleLegend: false,
 };
 
 export const emptyStore: Store = {
   source: '',
   isVisibleSteps: false,
+  isVisibleLegend: false,
 };
