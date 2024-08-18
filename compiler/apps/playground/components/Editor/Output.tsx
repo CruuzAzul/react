@@ -21,8 +21,8 @@ import React, {memo, ReactNode, useEffect, useState} from 'react';
 import {type Store} from '../../lib/stores';
 import TabbedWindow from '../TabbedWindow';
 import {monacoOptions} from './monacoOptions';
-import type {editor} from "monaco-editor";
-import {HIGHLIGHT_BACKGROUND} from "../../lib/constant";
+import type {editor} from 'monaco-editor';
+import {HIGHLIGHT_BACKGROUND} from '../../lib/constant';
 const MemoizedOutput = memo(Output);
 
 export default MemoizedOutput;
@@ -59,16 +59,20 @@ type Props = {
 type TabsRecord = Map<string, React.ReactNode>;
 
 const filterTabs = (tabs: TabsRecord) => {
-  const keysToRemove = ["EnvironmentConfig"];
+  const keysToRemove = ['EnvironmentConfig'];
 
   keysToRemove.forEach(key => {
     tabs.delete(key);
   });
 
   return tabs;
-}
+};
 
-async function tabify(source: string, compilerOutput: CompilerOutput, isVisibleSteps: boolean) {
+async function tabify(
+  source: string,
+  compilerOutput: CompilerOutput,
+  isVisibleSteps: boolean,
+) {
   const tabs = new Map<string, React.ReactNode>();
   const reorderedTabs = new Map<string, React.ReactNode>();
   const concattedResults = new Map<string, string>();
@@ -196,7 +200,9 @@ function getSourceMapUrl(code: string, map: string): string | null {
 }
 
 function Output({store, compilerOutput}: Props): JSX.Element {
-  const [tabsOpen, setTabsOpen] = useState<Set<string>>(() => new Set(['🪄 JS React Compiler Output']));
+  const [tabsOpen, setTabsOpen] = useState<Set<string>>(
+    () => new Set(['🪄 JS React Compiler Output']),
+  );
   const [tabs, setTabs] = useState<Map<string, React.ReactNode>>(
     () => new Map(),
   );
@@ -206,7 +212,11 @@ function Output({store, compilerOutput}: Props): JSX.Element {
     });
   }, [store.isVisibleSteps, store.source, compilerOutput]);
 
-  const changedPasses: Set<string> = new Set(['🪄 JS React Compiler Output', 'HIR', '📍 Source Map']); // Initial and final passes should always be bold
+  const changedPasses: Set<string> = new Set([
+    '🪄 JS React Compiler Output',
+    'HIR',
+    '📍 Source Map',
+  ]); // Initial and final passes should always be bold
   let lastResult: string = '';
   for (const [passName, results] of compilerOutput.results) {
     for (const result of results) {
@@ -265,7 +275,7 @@ function TextTabContent({
       inherit: true,
       rules: [],
       colors: {
-        "editor.lineHighlightBackground": HIGHLIGHT_BACKGROUND,
+        'editor.lineHighlightBackground': HIGHLIGHT_BACKGROUND,
       },
     });
     monaco.editor.setTheme('test-theme');

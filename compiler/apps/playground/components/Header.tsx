@@ -20,7 +20,7 @@ import {defaultStore} from '../lib/defaultStore';
 import {IconGitHub} from './Icons/IconGitHub';
 import Logo from './Logo';
 import {useStore, useStoreDispatch} from './StoreContext';
-import Legend from "./Legend/Legend";
+import Legend from './Legend/Legend';
 
 export default function Header(): JSX.Element {
   const store = useStore();
@@ -33,13 +33,13 @@ export default function Header(): JSX.Element {
     dispatchStore({
       type: 'setIntermediateSteps',
     });
-  }
+  };
 
   const handleToggleLegend = () => {
     dispatchStore({
       type: 'setLegend',
     });
-  }
+  };
 
   const handleReset = () => {
     if (confirm('Are you sure you want to reset the playground?')) {
@@ -65,7 +65,8 @@ export default function Header(): JSX.Element {
   };
 
   return (
-    <div className={`fixed z-10 flex flex-col items-center justify-between bg-white border-b border-gray-200 ${isVisibleLegend ? 'h-32' : 'h-20' }`}>
+    <div
+      className={`fixed z-10 flex flex-col items-center justify-between bg-white border-b border-gray-200 ${isVisibleLegend ? 'h-32' : 'h-20'}`}>
       <div className="flex items-center justify-between w-screen px-5 py-5">
         <div className="flex items-center flex-none h-full gap-2 text-lg">
           <Logo
@@ -76,42 +77,42 @@ export default function Header(): JSX.Element {
           />
           <p className="hidden select-none sm:block">
             React Compiler Playground Clone 🌀
-            <span className="pl-3 text-base text-link">by Mickaël et Lucas</span>
+            <span className="pl-3 text-base text-link">
+              by Mickaël et Lucas
+            </span>
           </p>
         </div>
         <div className="flex items-center text-[15px] gap-4">
-          {
-            store.isVisibleSteps && (
-              <button
-                title="Hide steps"
-                aria-label="Hiude steps"
-                className="flex items-center gap-1 transition-colors duration-150 ease-in text-link p-3 cursor-pointer hover:bg-blue-10 rounded-md"
-                onClick={handleToggleLegend}>
-                {
-                  store.isVisibleLegend ? <EyeOffIcon className="w-5 h-5"/> :
-                    <EyeIcon className="w-5 h-5"/>
-                }
-                <p className="hidden sm:block font-bold">
-                  {
-                    store.isVisibleLegend ? "Hide categories" : "Show categories"
-                  }
-                </p>
-              </button>
-            )
-          }
+          {store.isVisibleSteps && (
+            <button
+              title="Hide steps"
+              aria-label="Hiude steps"
+              className="flex items-center gap-1 transition-colors duration-150 ease-in text-link p-3 cursor-pointer hover:bg-blue-10 rounded-md"
+              onClick={handleToggleLegend}>
+              {store.isVisibleLegend ? (
+                <EyeOffIcon className="w-5 h-5" />
+              ) : (
+                <EyeIcon className="w-5 h-5" />
+              )}
+              <p className="hidden sm:block font-bold">
+                {store.isVisibleLegend ? 'Hide categories' : 'Show categories'}
+              </p>
+            </button>
+          )}
           <button
             title="Hide steps"
             aria-label="Hiude steps"
             className="flex items-center gap-1 transition-colors duration-150 ease-in text-link p-3 mr-3 cursor-pointer hover:bg-blue-10 rounded-md"
             onClick={handleToggleSteps}>
-            {
-              store.isVisibleSteps ? <EyeOffIcon className="w-5 h-5"/> :
-                <EyeIcon className="w-5 h-5"/>
-            }
+            {store.isVisibleSteps ? (
+              <EyeOffIcon className="w-5 h-5" />
+            ) : (
+              <EyeIcon className="w-5 h-5" />
+            )}
             <p className="hidden sm:block font-bold">
-              {
-                store.isVisibleSteps ? "Hide intermediate steps" : "Show intermediate steps"
-              }
+              {store.isVisibleSteps
+                ? 'Hide intermediate steps'
+                : 'Show intermediate steps'}
             </p>
           </button>
           <button
@@ -119,7 +120,7 @@ export default function Header(): JSX.Element {
             aria-label="Reset Playground"
             className="flex items-center gap-1 transition-colors duration-150 ease-in text-secondary cursor-pointer hover:text-link"
             onClick={handleReset}>
-            <RefreshIcon className="w-5 h-5"/>
+            <RefreshIcon className="w-5 h-5" />
             <p className="hidden sm:block">Reset</p>
           </button>
           <button
@@ -129,9 +130,9 @@ export default function Header(): JSX.Element {
             onClick={handleShare}
             disabled={showCheck}>
             {!showCheck ? (
-              <ShareIcon className="w-5 h-5"/>
+              <ShareIcon className="w-5 h-5" />
             ) : (
-              <CheckIcon className="w-5 h-5 fill-blue-50"/>
+              <CheckIcon className="w-5 h-5 fill-blue-50" />
             )}
             <p className="hidden sm:block">Share</p>
           </button>
@@ -141,11 +142,11 @@ export default function Header(): JSX.Element {
             rel="noreferrer noopener"
             aria-label="Open on GitHub"
             className="flex items-center gap-1 transition-colors duration-150 ease-in text-secondary hover:text-link">
-            <IconGitHub/>
+            <IconGitHub />
           </Link>
         </div>
       </div>
-      { isVisibleLegend && <Legend /> }
+      {isVisibleLegend && <Legend />}
     </div>
   );
 }

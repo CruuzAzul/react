@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -9,9 +9,9 @@
 
 import {Resizable} from 're-resizable';
 import React, {useCallback} from 'react';
-import {formatStepLabel} from "../lib/formatStepLabel";
-import {getCategoryColor} from "../types/StepCategories";
-import {useStore} from "./StoreContext";
+import {formatStepLabel} from '../lib/formatStepLabel';
+import {getCategoryColor} from '../types/StepCategories';
+import {useStore} from './StoreContext';
 
 type TabsRecord = Map<string, React.ReactNode>;
 
@@ -98,8 +98,7 @@ function TabbedWindowItem({
           {tabs.get(name) ?? <div>No output for {name}</div>}
         </Resizable>
       ) : (
-        <div
-          className="relative items-center h-full px-2 py-6 align-middle border-r border-grey-200">
+        <div className="relative items-center h-full px-2 py-6 align-middle border-r border-grey-200">
           <button
             title={`Expand compiler tab: ${name}`}
             aria-label={`Expand compiler tab: ${name}`}

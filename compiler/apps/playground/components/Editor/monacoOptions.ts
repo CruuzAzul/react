@@ -8,7 +8,7 @@
 import type {EditorProps} from '@monaco-editor/react';
 
 export const monacoOptions: Partial<EditorProps['options']> = {
-  theme: "zzzz-theme",
+  theme: 'zzzz-theme',
   fontSize: 20,
   padding: {top: 10},
   scrollbar: {

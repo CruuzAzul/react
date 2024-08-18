@@ -337,7 +337,8 @@ export default function Editor(): JSX.Element {
 
   return (
     <>
-      <div className={`relative flex basis ${isVisibleLegend ? 'top-32' : 'top-20'}`}>
+      <div
+        className={`relative flex basis ${isVisibleLegend ? 'top-32' : 'top-20'}`}>
         <div className={clsx('relative sm:basis-1/4')}>
           <Input
             language={language}
