@@ -2,7 +2,8 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "packages/*"
+      "packages/*",
+      "apps/*"
     ]
   },
   "repository": {
@@ -19,7 +20,8 @@
     "test": "yarn workspaces run test",
     "snap": "yarn workspace babel-plugin-react-compiler run snap",
     "snap:build": "yarn workspace snap run build",
-    "npm:publish": "node scripts/release/publish"
+    "npm:publish": "node scripts/release/publish",
+    "build:playground": "yarn workspace playground run build"
   },
   "dependencies": {
     "fs-extra": "^4.0.2"
