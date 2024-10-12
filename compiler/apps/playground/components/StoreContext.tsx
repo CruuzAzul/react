@@ -53,6 +53,12 @@ type ReducerAction =
       payload: {
         source: string;
       };
+    }
+  | {
+      type: 'setIntermediateSteps';
+    }
+  | {
+      type: 'setLegend';
     };
 
 function storeReducer(store: Store, action: ReducerAction): Store {
@@ -69,6 +75,25 @@ function storeReducer(store: Store, action: ReducerAction): Store {
       const newStore = {
         ...store,
         source,
+      };
+
+      saveStore(newStore);
+      return newStore;
+    }
+    case 'setIntermediateSteps': {
+      const newStore = {
+        ...store,
+        isVisibleSteps: !store.isVisibleSteps,
+        isVisibleLegend: false,
+      };
+
+      saveStore(newStore);
+      return newStore;
+    }
+    case 'setLegend': {
+      const newStore = {
+        ...store,
+        isVisibleLegend: !store.isVisibleLegend,
       };
 
       saveStore(newStore);

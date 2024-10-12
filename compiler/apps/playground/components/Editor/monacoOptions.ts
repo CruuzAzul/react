@@ -8,10 +8,11 @@
 import type {EditorProps} from '@monaco-editor/react';
 
 export const monacoOptions: Partial<EditorProps['options']> = {
-  fontSize: 14,
-  padding: {top: 8},
+  theme: 'zzzz-theme',
+  fontSize: 20,
+  padding: {top: 10},
   scrollbar: {
-    verticalScrollbarSize: 10,
+    vertical: 'hidden',
     alwaysConsumeMouseWheel: false,
   },
   minimap: {
@@ -29,4 +30,7 @@ export const monacoOptions: Partial<EditorProps['options']> = {
   automaticLayout: true,
   wordWrap: 'on',
   wrappingIndent: 'deepIndent',
+
+  hideCursorInOverviewRuler: true,
+  overviewRulerBorder: false,
 };

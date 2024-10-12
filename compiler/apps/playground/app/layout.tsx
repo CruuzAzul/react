@@ -18,7 +18,7 @@ export default function RootLayout({
       <head>
         <title>
           {process.env.NODE_ENV === 'development'
-            ? '[DEV] React Compiler Playground'
+            ? '🌀 Clone React Compiler Playground'
             : 'React Compiler Playground'}
         </title>
         <meta

@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -7,6 +9,9 @@
 
 import {Resizable} from 're-resizable';
 import React, {useCallback} from 'react';
+import {formatStepLabel} from '../lib/formatStepLabel';
+import {getCategoryColor} from '../types/StepCategories';
+import {useStore} from './StoreContext';
 
 type TabsRecord = Map<string, React.ReactNode>;
 
@@ -57,7 +62,9 @@ function TabbedWindowItem({
   setTabsOpen: (newTab: Set<string>) => void;
   hasChanged: boolean;
 }): React.ReactElement {
+  const store = useStore();
   const isShow = tabsOpen.has(name);
+  const colorItem = store.isVisibleLegend ? getCategoryColor(name) : undefined;
 
   const toggleTabs = useCallback(() => {
     const nextState = new Set(tabsOpen);
@@ -80,24 +87,30 @@ function TabbedWindowItem({
             title="Minimize tab"
             aria-label="Minimize tab"
             onClick={toggleTabs}
-            className={`p-4 duration-150 ease-in border-b cursor-pointer border-grey-200 ${
+            style={{
+              color: colorItem ? colorItem : undefined,
+            }}
+            className={`p-4 text-xl duration-150 ease-in border-b cursor-pointer border-grey-200 text-blue-50 ${
               hasChanged ? 'font-bold' : 'font-light'
-            } text-secondary hover:text-link`}>
-            - {displayName}
+            } text-link`}>
+            {displayName}
           </h2>
           {tabs.get(name) ?? <div>No output for {name}</div>}
         </Resizable>
       ) : (
-        <div className="relative items-center h-full px-1 py-6 align-middle border-r border-grey-200">
+        <div className="relative items-center h-full px-2 py-6 align-middle border-r border-grey-200">
           <button
             title={`Expand compiler tab: ${name}`}
             aria-label={`Expand compiler tab: ${name}`}
-            style={{transform: 'rotate(90deg) translate(-50%)'}}
+            style={{
+              transform: `rotate(90deg) translate(-50%)`,
+              color: colorItem ? colorItem : undefined,
+            }}
             onClick={toggleTabs}
-            className={`flex-grow-0 w-5 transition-colors duration-150 ease-in ${
+            className={`flex-grow-0 text-xl w-5 transition-colors duration-150 ease-in whitespace-nowrap ${
               hasChanged ? 'font-bold' : 'font-light'
-            } text-secondary hover:text-link`}>
-            {displayName}
+            } hover:text-link cursor-pointer`}>
+            {formatStepLabel(name)}
           </button>
         </div>
       )}

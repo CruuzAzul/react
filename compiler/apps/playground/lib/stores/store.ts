@@ -17,6 +17,8 @@ import {defaultStore} from '../defaultStore';
  */
 export interface Store {
   source: string;
+  isVisibleSteps: boolean;
+  isVisibleLegend: boolean;
 }
 export function encodeStore(store: Store): string {
   return compressToEncodedURIComponent(JSON.stringify(store));
