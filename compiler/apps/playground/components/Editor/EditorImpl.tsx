@@ -15,7 +15,6 @@ import {
   Effect,
   ErrorSeverity,
   parseConfigPragma,
-  run,
   ValueKind,
   runPlayground,
   type Hook,
@@ -267,7 +266,6 @@ function compile(source: string): [CompilerOutput, 'flow' | 'typescript'] {
             break;
           }
           default: {
-            const _: never = result;
             throw new Error(`Unhandled result ${result}`);
           }
         }

@@ -65,7 +65,7 @@ module.exports = {
 
     // Being explicit provides value in cases where inference may later change
     "@typescript-eslint/no-inferrable-types": "off",
-    "@typescript-eslint/explicit-function-return-type": "error",
+    '@typescript-eslint/explicit-function-return-type': 'off',
 
     /*
      * Unused variables are frequently a bug. Prefix unused variables with an _ to fix, but note

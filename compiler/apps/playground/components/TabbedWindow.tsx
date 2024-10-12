@@ -8,12 +8,12 @@
  */
 
 import {Resizable} from 're-resizable';
-import React, {useCallback} from 'react';
+import {useCallback, ReactNode} from 'react';
 import {formatStepLabel} from '../lib/formatStepLabel';
 import {getCategoryColor} from '../types/StepCategories';
 import {useStore} from './StoreContext';
 
-type TabsRecord = Map<string, React.ReactNode>;
+type TabsRecord = Map<string, ReactNode>;
 
 export default function TabbedWindow(props: {
   defaultTab: string | null;

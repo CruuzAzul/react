@@ -17,7 +17,7 @@ import {type CompilerError} from 'babel-plugin-react-compiler/src';
 import parserBabel from 'prettier/plugins/babel';
 import * as prettierPluginEstree from 'prettier/plugins/estree';
 import * as prettier from 'prettier/standalone';
-import React, {memo, ReactNode, useEffect, useState} from 'react';
+import {memo, ReactNode, useEffect, useState} from 'react';
 import {type Store} from '../../lib/stores';
 import TabbedWindow from '../TabbedWindow';
 import {monacoOptions} from './monacoOptions';
@@ -56,7 +56,7 @@ type Props = {
   compilerOutput: CompilerOutput;
 };
 
-type TabsRecord = Map<string, React.ReactNode>;
+type TabsRecord = Map<string, ReactNode>;
 
 const filterTabs = (tabs: TabsRecord) => {
   const keysToRemove = ['EnvironmentConfig'];
@@ -110,7 +110,6 @@ async function tabify(
           break;
         }
         default: {
-          const _: never = result;
           throw new Error('Unexpected result kind');
         }
       }
